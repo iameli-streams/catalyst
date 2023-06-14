@@ -11,8 +11,8 @@ RUN	apt update && apt install -yqq \
 	gstreamer1.0-tools gstreamer1.0-plugins-good gstreamer1.0-plugins-base gstreamer1.0-plugins-bad \
 	&& rm -rf /var/lib/apt/lists/*
 
-ADD	./bin	./usr/bin
+ADD	./bin	./usr/local/bin
 
 EXPOSE	1935	4242	8080	8889/udp
 
-CMD	["/usr/bin/MistController", "-c", "/etc/livepeer/catalyst.json"]
+CMD	["/usr/local/bin/MistController", "-c", "/etc/livepeer/catalyst.json"]
