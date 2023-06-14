@@ -91,24 +91,24 @@ livepeer-catalyst-api:
 	&& cd ../catalyst-api \
 	&& make build \
 	&& cd - \
-	&& mv ../catalyst-api/build/catalyst-api ./bin/livepeer-catalyst-api
+	&& mv ../catalyst-api/build/catalyst-api ./bin/livepeer-catalyst-api \
 	&& mv ../catalyst-api/build/mist-cleanup.sh ./bin/mist-cleanup
 
 .PHONY: livepeer-www
 livepeer-www:
 	set -x \
-	&& cd ../livepeer-com/packages/www \
+	&& cd ../studio/packages/www \
 	&& yarn run pkg:local \
 	&& cd - \
-	&& mv ../livepeer-com/packages/www/bin/www ./bin/livepeer-www
+	&& mv ../studio/packages/www/bin/www ./bin/livepeer-www
 
 .PHONY: livepeer-api
 livepeer-api:
 	set -x \
-	&& cd ../livepeer-com/packages/api \
+	&& cd ../studio/packages/api \
 	&& yarn run pkg:local \
 	&& cd - \
-	&& mv ../livepeer-com/packages/api/bin/api ./bin/livepeer-api
+	&& mv ../studio/packages/api/bin/api ./bin/livepeer-api
 
 .PHONY: download
 download:
