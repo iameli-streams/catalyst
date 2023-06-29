@@ -19,13 +19,13 @@ ENV	GIT_VERSION="${GIT_VERSION}"
 
 RUN	make livepeer-log
 
-FROM	ubuntu:20.04	as	catalyst-full-build
+FROM	ubuntu:22.04	as	catalyst-full-build
 
 WORKDIR	/opt/bin
 
 COPY --from=gobuild	/src/bin/	/opt/bin/
 
-FROM	ubuntu:20.04	as	catalyst-stripped-build
+FROM	ubuntu:22.04	as	catalyst-stripped-build
 
 ENV	DEBIAN_FRONTEND=noninteractive
 
@@ -46,7 +46,7 @@ WORKDIR /app
 RUN	git clone --depth 1 --branch ${LIVEPEER_W3_VERSION} https://github.com/livepeer/go-tools.git
 RUN	npm install --prefix /app/go-tools/w3
 
-FROM	ubuntu:20.04	AS	catalyst
+FROM	ubuntu:22.04	AS	catalyst-dependencies
 
 ENV	DEBIAN_FRONTEND=noninteractive
 
@@ -66,11 +66,11 @@ RUN	apt update && apt install -yqq \
 	"$(if [ "$BUILD_TARGET" != "stripped" ]; then echo "gdb"; fi)" \
 	&& rm -rf /var/lib/apt/lists/*
 
-COPY --from=catalyst-build	/opt/bin/		/usr/local/bin/
 COPY --from=node-build		/app/go-tools/w3	/opt/local/lib/livepeer-w3
 RUN	ln -s /opt/local/lib/livepeer-w3/livepeer-w3.js /usr/local/bin/livepeer-w3 && \
     	npm install -g ipfs-car
-
 EXPOSE	1935	4242	8080	8889/udp
-
 CMD	["/usr/local/bin/MistController", "-c", "/etc/livepeer/catalyst.json"]
+
+FROM	catalyst-dependencies	AS	catalyst
+COPY --from=catalyst-build	/opt/bin/		/usr/local/bin/

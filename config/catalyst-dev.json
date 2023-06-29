@@ -75,7 +75,7 @@
         "connector": "RTSP"
       },
       {
-        "connector": "SRT"
+        "connector": "SubRip"
       },
       {
         "connector": "TSSRT"
@@ -92,14 +92,18 @@
         "metricsClientIP": true,
         "metricsPerStream": true,
         "monitor": true,
-        "orchAddr": "localhost:8936",
+        "orchAddr": "127.0.0.1:8936",
         "rtmpAddr": "127.0.0.1:1936"
       },
       {
         "connector": "livepeer-catalyst-api",
-        "port": "7979",
+        "eth-keystore-password": "longpassword",
+        "http-internal-addr": "0.0.0.0:7979",
+        "http-addr": "0.0.0.0:8989",
         "source-output": "/tmp/livepeer/source",
-        "vod-pipeline-strategy": "catalyst"
+        "api-server": "http://127.0.0.1:3004",
+        "api-token": "0e27fdc0-9fd9-4fca-be46-81d4f9550696",
+        "stream-health-hook-url": "http://127.0.0.1:3004/api/stream/hook/health"
       },
       {
         "cliAddr": "127.0.0.1:7936",
@@ -117,6 +121,12 @@
       }
     ],
     "serverid": null,
+    "sessionInputMode": 15,
+    "sessionOutputMode": 15,
+    "sessionStreamInfoMode": 1,
+    "sessionUnspecifiedMode": 0,
+    "sessionViewerMode": 14,
+    "tknMode": 15,
     "triggers": {
       "PUSH_END": [
         {
@@ -130,10 +140,16 @@
           "sync": false
         }
       ],
+      "STREAM_BUFFER": [
+        {
+          "handler": "http://localhost:7979/api/mist/trigger",
+          "sync": false
+        }
+      ],
       "USER_NEW": [
         {
           "default": "true",
-          "handler": "http://127.0.0.1:8090/triggers",
+          "handler": "http://localhost:7979/USER_NEW",
           "streams": [],
           "sync": true
         }
@@ -141,6 +157,18 @@
     },
     "trustedproxy": []
   },
+  "extwriters": [
+    [
+      "s3",
+      "livepeer-catalyst-uploader -t 2592000s",
+      [
+        "s3",
+        "s3+http",
+        "s3+https",
+        "ipfs"
+      ]
+    ]
+  ],
   "push_settings": {
     "maxspeed": null,
     "wait": null
@@ -148,8 +176,8 @@
   "streams": {
     "video": {
       "DVR": 25000,
-      "name": "video",
       "maxkeepaway": 7500,
+      "name": "video",
       "processes": [
         {
           "debug": 5,
@@ -172,5 +200,6 @@
       "source": "push://"
     }
   },
-  "ui_settings": null
+  "ui_settings": null,
+  "variables": null
 }

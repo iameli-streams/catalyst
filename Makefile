@@ -168,6 +168,10 @@ docker:
 docker-local:
 	tar ch ./bin Dockerfile.local | docker build -f Dockerfile.local -t "$(DOCKER_TAG)" --build-arg=GIT_VERSION=$(GIT_VERSION) --build-arg=BUILD_TARGET=$(BUILD_TARGET) -
 
+.PHONY: docker-mounted
+docker-mounted:
+	docker build -t "$(DOCKER_TAG)-deps" --build-arg=GIT_VERSION=$(GIT_VERSION) --build-arg=BUILD_TARGET=$(BUILD_TARGET) --target=catalyst-dependencies .
+
 test: docker
 	go test ./test/e2e/*.go -v --logtostderr
 
