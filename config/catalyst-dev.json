@@ -103,7 +103,8 @@
         "source-output": "/tmp/livepeer/source",
         "api-server": "http://127.0.0.1:3004",
         "api-token": "0e27fdc0-9fd9-4fca-be46-81d4f9550696",
-        "stream-health-hook-url": "http://127.0.0.1:3004/api/stream/hook/health"
+        "stream-health-hook-url": "http://127.0.0.1:3004/api/stream/hook/health",
+        "amqp-url": "amqp://127.0.0.1:5672/livepeer"
       },
       {
         "cliAddr": "127.0.0.1:7936",
